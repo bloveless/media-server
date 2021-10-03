@@ -25,7 +25,7 @@ spec:
         image: {{ .Values.radarr.deployment.image }}
         env:
         - name: TZ
-          value: "{{ .Values.plex.deployment.timezone }}"
+          value: "{{ .Values.radarr.deployment.timezone }}"
         ports:
           - name: http
             containerPort: 7878

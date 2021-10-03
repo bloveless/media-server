@@ -1,34 +1,37 @@
-plex:
-  deployment:
-    enabled: true
-    name: plex
-    image: linuxserver/plex:version-1.24.3.5033-757abe6b4
-    timezone: America/Los_Angeles
-    claimToken: claim-Mzz6cc6XaqSJuDBsP17W
+kube-plex:
+  image:
+    repository: linuxserver/plex
+    tag: version-1.24.3.5033-757abe6b4
+    pullPolicy: IfNotPresent
+  kubePlex:
+    image:
+      repository: ghcr.io/bloveless/kube-plex
+      tag: sha-4c0007c
+  timezone: America/Los_Angeles
+  service:
+    type: LoadBalancer
+    loadBalancerIP: 192.168.3.1
   ingress:
     enabled: true
-    className: nginx
-    name: plex-ingress
+    hosts:
+      - plex.brennonloveless.com
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       ingress.kubernetes.io/force-ssl-redirect: "true"
     tls:
-      - hosts:
-        - plex.brennonloveless.com
-        secretName: plex-tls
-    hosts:
-      - host: plex.brennonloveless.com
-        paths:
-          - pathType: Prefix
-            path: /
-            serviceName: plex-service
-            servicePort: 32400
-  service:
-    name: plex-service
-    securePort: 443
-    port: 80
-    loadBalancer:
+      - secretName: plex-tls
+        hosts:
+          - plex.brennonloveless.com
+  persistence:
+    transcode:
       enabled: true
+      claimName: plex-transcode-pvc
+    data:
+      claimName: plex-data-pvc
+    config:
+      claimName: plex-config-pvc
+
+plex:
   persistence:
     config:
       enabled: true

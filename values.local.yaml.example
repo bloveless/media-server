@@ -1,3 +1,6 @@
+kube-plex:
+  claimToken: YourClaimToken
+
 transmission:
   deployment:
     username: YourUsername
