@@ -1,0 +1,157 @@
+plex:
+  deployment:
+    enabled: true
+    name: plex
+    image: linuxserver/plex:version-1.24.3.5033-757abe6b4
+    timezone: America/Los_Angeles
+    claimToken: claim-Mzz6cc6XaqSJuDBsP17W
+  ingress:
+    enabled: true
+    className: nginx
+    name: plex-ingress
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      ingress.kubernetes.io/force-ssl-redirect: "true"
+    tls:
+      - hosts:
+        - plex.brennonloveless.com
+        secretName: plex-tls
+    hosts:
+      - host: plex.brennonloveless.com
+        paths:
+          - pathType: Prefix
+            path: /
+            serviceName: plex-service
+            servicePort: 32400
+  service:
+    name: plex-service
+    securePort: 443
+    port: 80
+    loadBalancer:
+      enabled: true
+  persistence:
+    config:
+      enabled: true
+      claimName: plex-config-pvc
+      storageClassName: nfs-client
+      capacity: 50G
+    transcode:
+      enabled: true
+      claimName: plex-transcode-pvc
+      storageClassName: nfs-client
+      capacity: 50G
+    data:
+      enabled: true
+      claimName: plex-data-pvc
+      storageClassName: nfs-client
+      capacity: 500G
+
+radarr:
+  deployment:
+    enabled: true
+    name: radarr
+    image: linuxserver/radarr:version-3.2.2.5080
+    timezone: America/Los_Angeles
+  ingress:
+    enabled: true
+    className: nginx
+    name: radarr-ingress
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      ingress.kubernetes.io/force-ssl-redirect: "true"
+    tls:
+      - hosts:
+        - radarr.brennonloveless.com
+        secretName: radarr-tls
+    hosts:
+      - host: radarr.brennonloveless.com
+        paths:
+          - pathType: Prefix
+            path: /
+            serviceName: radarr-service
+            servicePort: 7878
+  service:
+    name: radarr-service
+    port: 7878
+  persistence:
+    config:
+      enabled: true
+      claimName: radarr-config-pvc
+      storageClassName: nfs-client
+      capacity: 1G
+
+transmission:
+  deployment:
+    enabled: true
+    name: transmission
+    image: linuxserver/transmission:version-3.00-r2
+    timezone: America/Los_Angeles
+    username: MyUsername
+    password: MyPassword
+  ingress:
+    enabled: true
+    className: nginx
+    name: transmission-ingress
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      ingress.kubernetes.io/force-ssl-redirect: "true"
+    tls:
+      - hosts:
+        - transmission.brennonloveless.com
+        secretName: transmission-tls
+    hosts:
+      - host: transmission.brennonloveless.com
+        paths:
+          - pathType: Prefix
+            path: /
+            serviceName: transmission-service
+            servicePort: 9091
+  service:
+    name: transmission-service
+    port: 9091
+  persistence:
+    config:
+      enabled: true
+      claimName: transmission-config-pvc
+      storageClassName: nfs-client
+      capacity: 1G
+
+jackett:
+  deployment:
+    enabled: true
+    name: jackett
+    image: linuxserver/jackett:version-v0.18.827
+    timezone: America/Los_Angeles
+  ingress:
+    enabled: true
+    className: nginx
+    name: jackett-ingress
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      ingress.kubernetes.io/force-ssl-redirect: "true"
+    tls:
+      - hosts:
+        - jackett.brennonloveless.com
+        secretName: jackett-tls
+    hosts:
+      - host: jackett.brennonloveless.com
+        paths:
+          - pathType: Prefix
+            path: /
+            serviceName: jackett-service
+            servicePort: 9117
+  service:
+    name: jackett-service
+    port: 9117
+  persistence:
+    config:
+      enabled: true
+      claimName: jackett-config-pvc
+      storageClassName: nfs-client
+      capacity: 1G
+    downloads:
+      enabled: true
+      claimName: jackett-downloads-pvc
+      storageClassName: nfs-client
+      capacity: 1G
+

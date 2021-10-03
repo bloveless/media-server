@@ -1,0 +1,4 @@
+transmission:
+  deployment:
+    username: YourUsername
+    password: YourPassword

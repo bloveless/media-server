@@ -1,0 +1,14 @@
+{{- if .Values.transmission.persistence.config.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.transmission.persistence.config.claimName }}
+spec:
+  storageClassName: {{ .Values.transmission.persistence.config.storageClassName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.transmission.persistence.config.capacity }}
+---
+{{- end }}

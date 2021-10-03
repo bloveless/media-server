@@ -1,0 +1,14 @@
+{{- if .Values.radarr.persistence.config.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.radarr.persistence.config.claimName }}
+spec:
+  storageClassName: {{ .Values.radarr.persistence.config.storageClassName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.radarr.persistence.config.capacity }}
+---
+{{- end }}

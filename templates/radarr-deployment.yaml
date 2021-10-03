@@ -1,0 +1,53 @@
+{{- if .Values.radarr.deployment.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.radarr.deployment.name }}
+  labels:
+    helm.sh/chart: {{ include "media-server.chart" . }}
+    app: media-server
+    component: radarr
+spec:
+  selector:
+    matchLabels:
+      helm.sh/chart: {{ include "media-server.chart" . }}
+      app: media-server
+      component: radarr
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: {{ include "media-server.chart" . }}
+        app: media-server
+        component: radarr
+    spec:
+      containers:
+      - name: {{ .Values.radarr.deployment.name }}
+        image: {{ .Values.radarr.deployment.image }}
+        env:
+        - name: TZ
+          value: "{{ .Values.plex.deployment.timezone }}"
+        ports:
+          - name: http
+            containerPort: 7878
+        volumeMounts:
+{{- if .Values.radarr.persistence.config.enabled }}
+          - name: config
+            mountPath: /config
+{{- end }}
+{{- if .Values.plex.persistence.data.enabled }}
+          - name: data
+            mountPath: /data
+{{- end }}
+      volumes:
+{{- if .Values.radarr.persistence.config.enabled }}
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Values.radarr.persistence.config.claimName }}
+{{- end }}
+{{- if .Values.plex.persistence.data.enabled }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Values.plex.persistence.data.claimName }}
+{{- end }}
+{{- end }}
+

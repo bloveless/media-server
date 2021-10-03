@@ -1,0 +1,29 @@
+{{- if .Values.jackett.persistence.config.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.jackett.persistence.config.claimName }}
+spec:
+  storageClassName: {{ .Values.jackett.persistence.config.storageClassName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.jackett.persistence.config.capacity }}
+---
+{{- end }}
+{{- if .Values.jackett.persistence.downloads.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.jackett.persistence.downloads.claimName }}
+spec:
+  storageClassName: {{ .Values.jackett.persistence.downloads.storageClassName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.jackett.persistence.downloads.capacity }}
+---
+{{- end }}
+

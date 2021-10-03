@@ -1,0 +1,41 @@
+{{- if .Values.plex.persistence.config.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.plex.persistence.config.claimName }}
+spec:
+  storageClassName: {{ .Values.plex.persistence.config.storageClassName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.plex.persistence.config.capacity }}
+---
+{{- end }}
+{{- if .Values.plex.persistence.transcode.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.plex.persistence.transcode.claimName }}
+spec:
+  storageClassName: {{ .Values.plex.persistence.transcode.storageClassName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.plex.persistence.transcode.capacity }}
+---
+{{- end }}
+{{- if .Values.plex.persistence.data.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.plex.persistence.data.claimName }}
+spec:
+  storageClassName: {{ .Values.plex.persistence.data.storageClassName }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.plex.persistence.data.capacity }}
+{{- end }}

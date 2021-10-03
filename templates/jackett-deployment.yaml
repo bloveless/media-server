@@ -1,0 +1,53 @@
+{{- if .Values.jackett.deployment.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.jackett.deployment.name }}
+  labels:
+    helm.sh/chart: {{ include "media-server.chart" . }}
+    app: media-server
+    component: jackett
+spec:
+  selector:
+    matchLabels:
+      helm.sh/chart: {{ include "media-server.chart" . }}
+      app: media-server
+      component: jackett
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: {{ include "media-server.chart" . }}
+        app: media-server
+        component: jackett
+    spec:
+      containers:
+      - name: {{ .Values.jackett.deployment.name }}
+        image: {{ .Values.jackett.deployment.image }}
+        env:
+        - name: TZ
+          value: "{{ .Values.jackett.deployment.timezone }}"
+        ports:
+          - name: http
+            containerPort: 9117
+        volumeMounts:
+{{- if .Values.jackett.persistence.config.enabled }}
+          - name: config
+            mountPath: /config
+{{- end }}
+{{- if .Values.jackett.persistence.downloads.enabled }}
+          - name: downloads
+            mountPath: /downloads
+{{- end }}
+      volumes:
+{{- if .Values.jackett.persistence.config.enabled }}
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Values.jackett.persistence.config.claimName }}
+{{- end }}
+{{- if .Values.jackett.persistence.downloads.enabled }}
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: {{ .Values.jackett.persistence.downloads.claimName }}
+{{- end }}
+{{- end }}
+

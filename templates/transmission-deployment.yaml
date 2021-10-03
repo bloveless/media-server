@@ -1,0 +1,57 @@
+{{- if .Values.transmission.deployment.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.transmission.deployment.name }}
+  labels:
+    helm.sh/chart: {{ include "media-server.chart" . }}
+    app: media-server
+    component: transmission
+spec:
+  selector:
+    matchLabels:
+      helm.sh/chart: {{ include "media-server.chart" . }}
+      app: media-server
+      component: transmission
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: {{ include "media-server.chart" . }}
+        app: media-server
+        component: transmission
+    spec:
+      containers:
+      - name: {{ .Values.transmission.deployment.name }}
+        image: {{ .Values.transmission.deployment.image }}
+        env:
+        - name: TZ
+          value: "{{ .Values.transmission.deployment.timezone }}"
+        - name: USER
+          value: {{ .Values.transmission.deployment.username }}
+        - name: PASS
+          value: {{ .Values.transmission.deployment.password }}
+        ports:
+          - name: http
+            containerPort: 9091
+        volumeMounts:
+{{- if .Values.transmission.persistence.config.enabled }}
+          - name: config
+            mountPath: /config
+{{- end }}
+{{- if .Values.plex.persistence.data.enabled }}
+          - name: data
+            mountPath: /data
+{{- end }}
+      volumes:
+{{- if .Values.transmission.persistence.config.enabled }}
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Values.transmission.persistence.config.claimName }}
+{{- end }}
+{{- if .Values.plex.persistence.data.enabled }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Values.plex.persistence.data.claimName }}
+{{- end }}
+{{- end }}
+
