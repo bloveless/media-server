@@ -1,3 +1,0 @@
-[submodule "kube-plex"]
-	path = kube-plex
-	url = git@github.com:bloveless/kube-plex.git

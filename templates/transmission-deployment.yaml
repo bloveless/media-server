@@ -26,10 +26,12 @@ spec:
         env:
         - name: TZ
           value: "{{ .Values.transmission.deployment.timezone }}"
+{{- if and .Values.transmission.deployment.username .Values.transmission.deployment.password }}
         - name: USER
           value: {{ .Values.transmission.deployment.username }}
         - name: PASS
           value: {{ .Values.transmission.deployment.password }}
+{{- end }}
         ports:
           - name: http
             containerPort: 9091

@@ -14,14 +14,7 @@ kube-plex:
   ingress:
     enabled: true
     hosts:
-      - plex.brennonloveless.com
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      ingress.kubernetes.io/force-ssl-redirect: "true"
-    tls:
-      - secretName: plex-tls
-        hosts:
-          - plex.brennonloveless.com
+      - plex.lan
   persistence:
     transcode:
       enabled: true
@@ -32,6 +25,17 @@ kube-plex:
       claimName: plex-config-pvc
 
 plex:
+  ingress:
+    enabled: true
+    className: nginx
+    name: plex-ingress
+    hosts:
+      - host: plex.lan
+        paths:
+          - pathType: Prefix
+            path: /
+            serviceName: plex-service
+            servicePort: 32400
   persistence:
     config:
       enabled: true
@@ -59,15 +63,8 @@ radarr:
     enabled: true
     className: nginx
     name: radarr-ingress
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      ingress.kubernetes.io/force-ssl-redirect: "true"
-    tls:
-      - hosts:
-        - radarr.brennonloveless.com
-        secretName: radarr-tls
     hosts:
-      - host: radarr.brennonloveless.com
+      - host: radarr.lan
         paths:
           - pathType: Prefix
             path: /
@@ -89,21 +86,12 @@ transmission:
     name: transmission
     image: linuxserver/transmission:version-3.00-r2
     timezone: America/Los_Angeles
-    username: MyUsername
-    password: MyPassword
   ingress:
     enabled: true
     className: nginx
     name: transmission-ingress
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      ingress.kubernetes.io/force-ssl-redirect: "true"
-    tls:
-      - hosts:
-        - transmission.brennonloveless.com
-        secretName: transmission-tls
     hosts:
-      - host: transmission.brennonloveless.com
+      - host: transmission.lan
         paths:
           - pathType: Prefix
             path: /
@@ -129,15 +117,8 @@ jackett:
     enabled: true
     className: nginx
     name: jackett-ingress
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      ingress.kubernetes.io/force-ssl-redirect: "true"
-    tls:
-      - hosts:
-        - jackett.brennonloveless.com
-        secretName: jackett-tls
     hosts:
-      - host: jackett.brennonloveless.com
+      - host: jackett.lan
         paths:
           - pathType: Prefix
             path: /

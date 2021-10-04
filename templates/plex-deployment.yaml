@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plex-deployment
+  labels:
+    helm.sh/chart: {{ include "media-server.chart" . }}
+    app: media-server
+    component: plex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      helm.sh/chart: {{ include "media-server.chart" . }}
+      app: media-server
+      component: plex
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: {{ include "media-server.chart" . }}
+        app: media-server
+        component: plex
+    spec:
+      containers:
+      - name: plex
+        image: linuxserver/plex:version-1.24.3.5033-757abe6b4
+        livenessProbe:
+          tcpSocket:
+            port: 32400
+          initialDelaySeconds: 60
+          periodSeconds: 5
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: data
+          mountPath: /data
+        - name: transcode
+          mountPath: /transcode
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        resources:
+          requests:
+            memory: "500Mi"
+            cpu: "1"
+          limits:
+            memory: "500Mi"
+            cpu: "1"
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: plex-data-pvc
+      - name: config
+        persistentVolumeClaim:
+          claimName: plex-config-pvc
+      - name: transcode
+        persistentVolumeClaim:
+          claimName: plex-transcode-pvc
+
