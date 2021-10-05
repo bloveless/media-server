@@ -1,14 +1,14 @@
-{{- if .Values.radarr.persistence.config.enabled }}
+{{- if .Values.sonarr.persistence.config.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.radarr.persistence.config.claimName }}
+  name: {{ .Values.sonarr.persistence.config.claimName }}
 spec:
-  storageClassName: {{ .Values.radarr.persistence.config.storageClassName }}
+  storageClassName: {{ .Values.sonarr.persistence.config.storageClassName }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.radarr.persistence.config.capacity }}
+      storage: {{ .Values.sonarr.persistence.config.capacity }}
 ---
 {{- end }}

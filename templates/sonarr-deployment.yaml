@@ -1,0 +1,53 @@
+{{- if .Values.sonarr.deployment.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.sonarr.deployment.name }}
+  labels:
+    helm.sh/chart: {{ include "media-server.chart" . }}
+    app: media-server
+    component: sonarr
+spec:
+  selector:
+    matchLabels:
+      helm.sh/chart: {{ include "media-server.chart" . }}
+      app: media-server
+      component: sonarr
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: {{ include "media-server.chart" . }}
+        app: media-server
+        component: sonarr
+    spec:
+      containers:
+      - name: {{ .Values.sonarr.deployment.name }}
+        image: {{ .Values.sonarr.deployment.image }}
+        env:
+        - name: TZ
+          value: "{{ .Values.sonarr.deployment.timezone }}"
+        ports:
+          - name: http
+            containerPort: 7878
+        volumeMounts:
+{{- if .Values.sonarr.persistence.config.enabled }}
+          - name: config
+            mountPath: /config
+{{- end }}
+{{- if .Values.plex.persistence.data.enabled }}
+          - name: data
+            mountPath: /data
+{{- end }}
+      volumes:
+{{- if .Values.sonarr.persistence.config.enabled }}
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Values.sonarr.persistence.config.claimName }}
+{{- end }}
+{{- if .Values.plex.persistence.data.enabled }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Values.plex.persistence.data.claimName }}
+{{- end }}
+{{- end }}
+

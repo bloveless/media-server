@@ -1,29 +1,3 @@
-kube-plex:
-  image:
-    repository: linuxserver/plex
-    tag: version-1.24.3.5033-757abe6b4
-    pullPolicy: IfNotPresent
-  kubePlex:
-    image:
-      repository: ghcr.io/bloveless/kube-plex
-      tag: sha-4c0007c
-  timezone: America/Los_Angeles
-  service:
-    type: LoadBalancer
-    loadBalancerIP: 192.168.3.1
-  ingress:
-    enabled: true
-    hosts:
-      - plex.lan
-  persistence:
-    transcode:
-      enabled: true
-      claimName: plex-transcode-pvc
-    data:
-      claimName: plex-data-pvc
-    config:
-      claimName: plex-config-pvc
-
 plex:
   ingress:
     enabled: true
@@ -77,6 +51,33 @@ radarr:
     config:
       enabled: true
       claimName: radarr-config-pvc
+      storageClassName: nfs-client
+      capacity: 1G
+
+sonarr:
+  deployment:
+    enabled: true
+    name: sonarr
+    image: linuxserver/sonarr:version-3.0.6.1342
+    timezone: America/Los_Angeles
+  ingress:
+    enabled: true
+    className: nginx
+    name: sonarr-ingress
+    hosts:
+      - host: sonarr.lan
+        paths:
+          - pathType: Prefix
+            path: /
+            serviceName: sonarr-service
+            servicePort: 7878
+  service:
+    name: sonarr-service
+    port: 7878
+  persistence:
+    config:
+      enabled: true
+      claimName: sonarr-config-pvc
       storageClassName: nfs-client
       capacity: 1G
 
