@@ -46,7 +46,6 @@ radarr:
             servicePort: 7878
   service:
     name: radarr-service
-    port: 7878
   persistence:
     config:
       enabled: true
@@ -70,10 +69,9 @@ sonarr:
           - pathType: Prefix
             path: /
             serviceName: sonarr-service
-            servicePort: 7878
+            servicePort: 8989
   service:
     name: sonarr-service
-    port: 7878
   persistence:
     config:
       enabled: true
@@ -100,7 +98,6 @@ transmission:
             servicePort: 9091
   service:
     name: transmission-service
-    port: 9091
   persistence:
     config:
       enabled: true
@@ -127,7 +124,6 @@ jackett:
             servicePort: 9117
   service:
     name: jackett-service
-    port: 9117
   persistence:
     config:
       enabled: true
@@ -137,6 +133,38 @@ jackett:
     downloads:
       enabled: true
       claimName: jackett-downloads-pvc
+      storageClassName: nfs-client
+      capacity: 1G
+
+overseerr:
+  deployment:
+    enabled: true
+    name: overseerr
+    image: sctx/overseerr:1.26.1
+    timezone: America/Los_Angeles
+  ingress:
+    enabled: true
+    className: nginx
+    name: overseerr-ingress
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    tls:
+      - hosts:
+        - overseerr.brennonloveless.com
+        secretName: overseerr-tls
+    hosts:
+      - host: overseerr.brennonloveless.com
+        paths:
+          - pathType: Prefix
+            path: /
+            serviceName: overseerr-service
+            servicePort: 5055
+  service:
+    name: overseerr-service
+  persistence:
+    config:
+      enabled: true
+      claimName: overseerr-config-pvc
       storageClassName: nfs-client
       capacity: 1G
 

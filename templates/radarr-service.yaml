@@ -8,7 +8,6 @@ spec:
     app: media-server
     component: sonarr
   ports:
-    - name: https
-      port: {{ .Values.sonarr.service.port }}
-      targetPort: 8989
+    - name: http
+      port: 8989
 

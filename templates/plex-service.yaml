@@ -12,6 +12,5 @@ spec:
     app: media-server
     component: plex
   ports:
-    - name: plex-tcp32400
-      protocol: TCP
+    - name: http
       port: 32400

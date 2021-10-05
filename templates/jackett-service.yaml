@@ -9,6 +9,5 @@ spec:
     component: jackett
   ports:
     - name: http
-      port: {{ .Values.jackett.service.port }}
-      targetPort: 9117
+      port: 9117
 

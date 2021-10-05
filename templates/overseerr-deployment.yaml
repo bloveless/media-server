@@ -1,0 +1,44 @@
+{{- if .Values.overseerr.deployment.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.overseerr.deployment.name }}
+  labels:
+    helm.sh/chart: {{ include "media-server.chart" . }}
+    app: media-server
+    component: overseerr
+spec:
+  selector:
+    matchLabels:
+      helm.sh/chart: {{ include "media-server.chart" . }}
+      app: media-server
+      component: overseerr
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: {{ include "media-server.chart" . }}
+        app: media-server
+        component: overseerr
+    spec:
+      containers:
+      - name: {{ .Values.overseerr.deployment.name }}
+        image: {{ .Values.overseerr.deployment.image }}
+        env:
+        - name: TZ
+          value: "{{ .Values.overseerr.deployment.timezone }}"
+        ports:
+          - name: http
+            containerPort: 5055
+        volumeMounts:
+{{- if .Values.overseerr.persistence.config.enabled }}
+          - name: config
+            mountPath: /app/config
+{{- end }}
+      volumes:
+{{- if .Values.overseerr.persistence.config.enabled }}
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Values.overseerr.persistence.config.claimName }}
+{{- end }}
+{{- end }}
+

@@ -1,0 +1,39 @@
+{{- if .Values.overseerr.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.overseerr.ingress.name }}
+  labels:
+    helm.sh/chart: {{ include "media-server.chart" . }}
+    app: media-server
+    component: overseerr-ingress
+  annotations:
+    {{ toYaml .Values.overseerr.ingress.annotations | nindent 4 }}
+spec:
+  ingressClassName: {{ .Values.overseerr.ingress.className }}
+  {{- if .Values.overseerr.ingress.tls }}
+  tls:
+    {{- range .Values.overseerr.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.overseerr.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ .serviceName }}
+                port:
+                  number: {{ .servicePort }}
+          {{- end }}
+    {{- end }}
+{{- end }}

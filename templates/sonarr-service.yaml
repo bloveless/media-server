@@ -8,7 +8,6 @@ spec:
     app: media-server
     component: radarr
   ports:
-    - name: https
-      port: {{ .Values.radarr.service.port }}
-      targetPort: 7878
+    - name: http
+      port: 7878
 
