@@ -2,13 +2,13 @@ plex:
   ingress:
     enabled: true
     className: nginx
-    name: plex-ingress
+    name: plex
     hosts:
       - host: plex.lan
         paths:
           - pathType: Prefix
             path: /
-            serviceName: plex-service
+            serviceName: plex
             servicePort: 32400
   persistence:
     config:
@@ -36,16 +36,16 @@ radarr:
   ingress:
     enabled: true
     className: nginx
-    name: radarr-ingress
+    name: radarr
     hosts:
       - host: radarr.lan
         paths:
           - pathType: Prefix
             path: /
-            serviceName: radarr-service
+            serviceName: radarr
             servicePort: 7878
   service:
-    name: radarr-service
+    name: radarr
   persistence:
     config:
       enabled: true
@@ -62,16 +62,16 @@ sonarr:
   ingress:
     enabled: true
     className: nginx
-    name: sonarr-ingress
+    name: sonarr
     hosts:
       - host: sonarr.lan
         paths:
           - pathType: Prefix
             path: /
-            serviceName: sonarr-service
+            serviceName: sonarr
             servicePort: 8989
   service:
-    name: sonarr-service
+    name: sonarr
   persistence:
     config:
       enabled: true
@@ -89,16 +89,16 @@ transmission:
   ingress:
     enabled: true
     className: nginx
-    name: transmission-ingress
+    name: transmission
     hosts:
       - host: transmission.lan
         paths:
           - pathType: Prefix
             path: /
-            serviceName: transmission-service
+            serviceName: transmission
             servicePort: 9091
   service:
-    name: transmission-service
+    name: transmission
   persistence:
     config:
       enabled: true
@@ -115,16 +115,16 @@ jackett:
   ingress:
     enabled: true
     className: nginx
-    name: jackett-ingress
+    name: jackett
     hosts:
       - host: jackett.lan
         paths:
           - pathType: Prefix
             path: /
-            serviceName: jackett-service
+            serviceName: jackett
             servicePort: 9117
   service:
-    name: jackett-service
+    name: jackett
   persistence:
     config:
       enabled: true
@@ -146,7 +146,7 @@ overseerr:
   ingress:
     enabled: true
     className: nginx
-    name: overseerr-ingress
+    name: overseerr
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
     tls:
@@ -158,10 +158,10 @@ overseerr:
         paths:
           - pathType: Prefix
             path: /
-            serviceName: overseerr-service
+            serviceName: overseerr
             servicePort: 5055
   service:
-    name: overseerr-service
+    name: overseerr
   persistence:
     config:
       enabled: true

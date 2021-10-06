@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: plex-deployment
+  name: plex
   labels:
     helm.sh/chart: {{ include "media-server.chart" . }}
     app: media-server
