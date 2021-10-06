@@ -10,4 +10,6 @@ spec:
   ports:
     - name: http
       port: 9091
+    - name: webproxy-http
+      port: 8118
 

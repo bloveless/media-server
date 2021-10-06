@@ -83,8 +83,9 @@ transmission:
   deployment:
     enabled: true
     name: transmission
-    image: linuxserver/transmission:version-3.00-r2
+    image: haugene/transmission-openvpn:4.0
     timezone: America/Los_Angeles
+    secretName: pia-user-pass
   ingress:
     enabled: true
     className: nginx

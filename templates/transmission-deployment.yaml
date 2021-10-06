@@ -23,18 +23,56 @@ spec:
       containers:
       - name: {{ .Values.transmission.deployment.name }}
         image: {{ .Values.transmission.deployment.image }}
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: 1
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
         env:
         - name: TZ
-          value: "{{ .Values.transmission.deployment.timezone }}"
-{{- if and .Values.transmission.deployment.username .Values.transmission.deployment.password }}
-        - name: USER
-          value: {{ .Values.transmission.deployment.username }}
-        - name: PASS
-          value: {{ .Values.transmission.deployment.password }}
-{{- end }}
+          value: {{ .Values.transmission.deployment.timezone }}
+        - name: DISABLE_PORT_UPDATER
+          value: "true"
+        - name: OPENVPN_OPTS
+          value: "--dhcp-option DNS 1.1.1.1"
+        - name: OPENVPN_CONFIG
+          value: us_seattle
+        - name: OPENVPN_PROVIDER
+          value: pia
+        - name: OPENVPN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.transmission.deployment.secretName }}
+              key: username
+        - name: OPENVPN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.transmission.deployment.secretName }}
+              key: password
+        - name: LOCAL_NETWORK
+          value: 10.0.0.0/8
+        - name: TRANSMISSION_DOWNLOAD_QUEUE_SIZE
+          value: "4"
+        - name: TRANSMISSION_PEER_PORT_RANDOM_ON_START
+          value: "true"
+        - name: TRANSMISSION_DOWNLOAD_DIR
+          value: /data/downloads/complete
+        - name: TRANSMISSION_INCOMPLETE_DIR
+          value: /data/downloads/incomplete
+        - name: TRANSMISSION_WATCH_DIR
+          value: /data/downloads/watch
+        - name: TRANSMISSION_WEB_UI
+          value: combustion
+        - name: WEBPROXY_ENABLED
+          value: "true"
         ports:
           - name: http
             containerPort: 9091
+          - name: webproxy-http
+            containerPort: 8118
         volumeMounts:
 {{- if .Values.transmission.persistence.config.enabled }}
           - name: config
