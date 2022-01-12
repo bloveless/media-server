@@ -6,7 +6,7 @@ metadata:
 spec:
   storageClassName: {{ .Values.overseerr.persistence.config.storageClassName }}
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: {{ .Values.overseerr.persistence.config.capacity }}

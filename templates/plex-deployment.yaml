@@ -1,7 +1,8 @@
+{{- if .Values.plex.deployment.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: plex
+  name: {{ .Values.plex.deployment.name }}
   labels:
     helm.sh/chart: {{ include "media-server.chart" . }}
     app: media-server
@@ -21,8 +22,8 @@ spec:
         component: plex
     spec:
       containers:
-      - name: plex
-        image: linuxserver/plex:version-1.24.3.5033-757abe6b4
+      - name: {{ .Values.plex.deployment.name }}
+        image: {{ .Values.plex.deployment.image }}
         livenessProbe:
           tcpSocket:
             port: 32400
@@ -36,6 +37,8 @@ spec:
         - name: transcode
           mountPath: /transcode
         env:
+        - name: TZ
+          value: {{ .Values.plex.deployment.timezone }}
         - name: PUID
           value: "1000"
         - name: PGID
@@ -57,4 +60,4 @@ spec:
       - name: transcode
         persistentVolumeClaim:
           claimName: plex-transcode-pvc
-
+{{- end }}

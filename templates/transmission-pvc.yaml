@@ -6,7 +6,7 @@ metadata:
 spec:
   storageClassName: {{ .Values.transmission.persistence.config.storageClassName }}
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: {{ .Values.transmission.persistence.config.capacity }}

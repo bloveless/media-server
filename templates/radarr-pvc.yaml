@@ -6,7 +6,7 @@ metadata:
 spec:
   storageClassName: {{ .Values.sonarr.persistence.config.storageClassName }}
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: {{ .Values.sonarr.persistence.config.capacity }}

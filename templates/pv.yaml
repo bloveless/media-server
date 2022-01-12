@@ -1,0 +1,153 @@
+{{- if .Values.jackett.persistence.config.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-server-jackett-config
+  labels:
+    type: local
+spec:
+  storageClassName: {{ .Values.jackett.persistence.config.storageClassName }}
+  capacity:
+    storage: {{ .Values.jackett.persistence.config.capacity }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /nfs/k8s/media-server/jackett/config
+{{- end }}
+{{- if .Values.jackett.persistence.downloads.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-server-jackett-downloads
+  labels:
+    type: local
+spec:
+  storageClassName: {{ .Values.jackett.persistence.downloads.storageClassName }}
+  capacity:
+    storage: {{ .Values.jackett.persistence.downloads.capacity }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /nfs/k8s/media-server/jackett/storage
+{{- end }}
+{{- if .Values.overseerr.persistence.config.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-server-overseerr-config
+  labels:
+    type: local
+spec:
+  storageClassName: {{ .Values.overseerr.persistence.config.storageClassName }}
+  capacity:
+    storage: {{ .Values.overseerr.persistence.config.capacity }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /nfs/k8s/media-server/overseerr/config
+{{- end }}
+{{- if .Values.plex.persistence.config.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-server-plex-config
+  labels:
+    type: local
+spec:
+  storageClassName: {{ .Values.plex.persistence.config.storageClassName }}
+  capacity:
+    storage: {{ .Values.plex.persistence.config.capacity }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /nfs/k8s/media-server/plex/config
+{{- end }}
+{{- if .Values.plex.persistence.transcode.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-server-plex-transcode
+  labels:
+    type: local
+spec:
+  storageClassName: {{ .Values.plex.persistence.transcode.storageClassName }}
+  capacity:
+    storage: {{ .Values.plex.persistence.transcode.capacity }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /nfs/k8s/media-server/plex/transcode
+{{- end }}
+{{- if .Values.plex.persistence.data.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-server-plex-data
+  labels:
+    type: local
+spec:
+  storageClassName: {{ .Values.plex.persistence.data.storageClassName }}
+  capacity:
+    storage: {{ .Values.plex.persistence.data.capacity }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /nfs/k8s/media-server/plex/data
+{{- end }}
+{{- if .Values.radarr.persistence.config.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-server-radarr-config
+  labels:
+    type: local
+spec:
+  storageClassName: {{ .Values.radarr.persistence.config.storageClassName }}
+  capacity:
+    storage: {{ .Values.radarr.persistence.config.capacity }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /nfs/k8s/media-server/radarr/config
+{{- end }}
+{{- if .Values.sonarr.persistence.config.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-server-sonarr-config
+  labels:
+    type: local
+spec:
+  storageClassName: {{ .Values.sonarr.persistence.config.storageClassName }}
+  capacity:
+    storage: {{ .Values.sonarr.persistence.config.capacity }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /nfs/k8s/media-server/sonarr/config
+{{- end }}
+{{- if .Values.transmission.persistence.config.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-server-transmission-config
+  labels:
+    type: local
+spec:
+  storageClassName: {{ .Values.transmission.persistence.config.storageClassName }}
+  capacity:
+    storage: {{ .Values.transmission.persistence.config.capacity }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /nfs/k8s/media-server/transmission/config
+{{- end }}

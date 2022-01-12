@@ -34,14 +34,12 @@ spec:
         env:
         - name: TZ
           value: {{ .Values.transmission.deployment.timezone }}
-        - name: DISABLE_PORT_UPDATER
-          value: "true"
         - name: OPENVPN_OPTS
           value: "--dhcp-option DNS 1.1.1.1"
         - name: OPENVPN_CONFIG
-          value: us_seattle
+          value: US
         - name: OPENVPN_PROVIDER
-          value: pia
+          value: OVPN
         - name: OPENVPN_USERNAME
           valueFrom:
             secretKeyRef:
@@ -56,8 +54,8 @@ spec:
           value: 10.0.0.0/8
         - name: TRANSMISSION_DOWNLOAD_QUEUE_SIZE
           value: "4"
-        - name: TRANSMISSION_PEER_PORT_RANDOM_ON_START
-          value: "true"
+        - name: TRANSMISSION_PEER_PORT
+          value: "50274"
         - name: TRANSMISSION_DOWNLOAD_DIR
           value: /data/downloads/complete
         - name: TRANSMISSION_INCOMPLETE_DIR
@@ -68,6 +66,8 @@ spec:
           value: combustion
         - name: WEBPROXY_ENABLED
           value: "true"
+        - name: WEBPROXY_PORT
+          value: "8118"
         ports:
           - name: http
             containerPort: 9091

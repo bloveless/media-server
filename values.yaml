@@ -1,4 +1,9 @@
 plex:
+  deployment:
+    enabled: true
+    name: plex
+    image: linuxserver/plex:1.25.3.5385-f05b712b6-ls96
+    timezone: America/Los_Angeles
   ingress:
     enabled: true
     className: nginx
@@ -14,24 +19,24 @@ plex:
     config:
       enabled: true
       claimName: plex-config-pvc
-      storageClassName: nfs-client
+      storageClassName: manual
       capacity: 50G
     transcode:
       enabled: true
       claimName: plex-transcode-pvc
-      storageClassName: nfs-client
+      storageClassName: manual
       capacity: 50G
     data:
       enabled: true
       claimName: plex-data-pvc
-      storageClassName: nfs-client
+      storageClassName: manual
       capacity: 500G
 
 radarr:
   deployment:
     enabled: true
     name: radarr
-    image: linuxserver/radarr:version-3.2.2.5080
+    image: linuxserver/radarr:3.2.2
     timezone: America/Los_Angeles
   ingress:
     enabled: true
@@ -50,14 +55,14 @@ radarr:
     config:
       enabled: true
       claimName: radarr-config-pvc
-      storageClassName: nfs-client
+      storageClassName: manual
       capacity: 1G
 
 sonarr:
   deployment:
     enabled: true
     name: sonarr
-    image: linuxserver/sonarr:version-3.0.6.1342
+    image: linuxserver/sonarr:3.0.6
     timezone: America/Los_Angeles
   ingress:
     enabled: true
@@ -76,7 +81,7 @@ sonarr:
     config:
       enabled: true
       claimName: sonarr-config-pvc
-      storageClassName: nfs-client
+      storageClassName: manual
       capacity: 1G
 
 transmission:
@@ -85,7 +90,7 @@ transmission:
     name: transmission
     image: haugene/transmission-openvpn:4.0
     timezone: America/Los_Angeles
-    secretName: pia-user-pass
+    secretName: ovpn-user-pass
   ingress:
     enabled: true
     className: nginx
@@ -103,14 +108,14 @@ transmission:
     config:
       enabled: true
       claimName: transmission-config-pvc
-      storageClassName: nfs-client
+      storageClassName: manual
       capacity: 1G
 
 jackett:
   deployment:
     enabled: true
     name: jackett
-    image: linuxserver/jackett:version-v0.18.827
+    image: linuxserver/jackett:0.20.280
     timezone: America/Los_Angeles
   ingress:
     enabled: true
@@ -129,19 +134,19 @@ jackett:
     config:
       enabled: true
       claimName: jackett-config-pvc
-      storageClassName: nfs-client
+      storageClassName: manual
       capacity: 1G
     downloads:
       enabled: true
       claimName: jackett-downloads-pvc
-      storageClassName: nfs-client
+      storageClassName: manual
       capacity: 1G
 
 overseerr:
   deployment:
     enabled: true
     name: overseerr
-    image: sctx/overseerr:1.26.1
+    image: sctx/overseerr:1.28.0
     timezone: America/Los_Angeles
   ingress:
     enabled: true
@@ -166,6 +171,6 @@ overseerr:
     config:
       enabled: true
       claimName: overseerr-config-pvc
-      storageClassName: nfs-client
+      storageClassName: manual
       capacity: 1G
 

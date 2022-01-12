@@ -6,7 +6,7 @@ metadata:
 spec:
   storageClassName: {{ .Values.jackett.persistence.config.storageClassName }}
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: {{ .Values.jackett.persistence.config.capacity }}
@@ -20,7 +20,7 @@ metadata:
 spec:
   storageClassName: {{ .Values.jackett.persistence.downloads.storageClassName }}
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: {{ .Values.jackett.persistence.downloads.capacity }}
