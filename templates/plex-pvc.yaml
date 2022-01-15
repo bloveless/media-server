@@ -5,6 +5,11 @@ metadata:
   name: {{ .Values.plex.persistence.config.claimName }}
 spec:
   storageClassName: {{ .Values.plex.persistence.config.storageClassName }}
+  selector:
+    matchLabels:
+      app: media-server
+      component: plex
+      volume: config
   accessModes:
     - ReadWriteMany
   resources:
@@ -19,6 +24,11 @@ metadata:
   name: {{ .Values.plex.persistence.transcode.claimName }}
 spec:
   storageClassName: {{ .Values.plex.persistence.transcode.storageClassName }}
+  selector:
+    matchLabels:
+      app: media-server
+      component: plex
+      volume: transcode
   accessModes:
     - ReadWriteMany
   resources:
@@ -33,6 +43,11 @@ metadata:
   name: {{ .Values.plex.persistence.data.claimName }}
 spec:
   storageClassName: {{ .Values.plex.persistence.data.storageClassName }}
+  selector:
+    matchLabels:
+      app: media-server
+      component: plex
+      volume: data
   accessModes:
     - ReadWriteMany
   resources:

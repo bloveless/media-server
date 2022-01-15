@@ -5,6 +5,11 @@ metadata:
   name: {{ .Values.transmission.persistence.config.claimName }}
 spec:
   storageClassName: {{ .Values.transmission.persistence.config.storageClassName }}
+  selector:
+    matchLabels:
+      app: media-server
+      component: transmission
+      volume: config
   accessModes:
     - ReadWriteMany
   resources:

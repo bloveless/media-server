@@ -1,14 +1,19 @@
-{{- if .Values.radarr.persistence.config.enabled }}
+{{- if .Values.sonarr.persistence.config.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.radarr.persistence.config.claimName }}
+  name: {{ .Values.sonarr.persistence.config.claimName }}
 spec:
-  storageClassName: {{ .Values.radarr.persistence.config.storageClassName }}
+  storageClassName: {{ .Values.sonarr.persistence.config.storageClassName }}
+  selector:
+    matchLabels:
+      app: media-server
+      component: sonarr
+      volume: config
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: {{ .Values.radarr.persistence.config.capacity }}
+      storage: {{ .Values.sonarr.persistence.config.capacity }}
 ---
 {{- end }}
