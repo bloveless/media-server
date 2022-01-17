@@ -4,7 +4,7 @@ metadata:
   name: deployment-restart
 spec:
   concurrencyPolicy: Forbid
-  schedule: '0 4 * * *' # cron spec of time, here, 4 o'clock
+  schedule: '0 12 * * *' # cron spec of time 12 UTC, here, 4 o'clock
   jobTemplate:
     spec:
       ttlSecondsAfterFinished: 60
