@@ -9,7 +9,7 @@ plex:
     timezone: America/Los_Angeles
   ingress:
     enabled: true
-    className: public
+    className: nginx
     name: plex
     hosts:
       - host: plex.lan
@@ -43,7 +43,7 @@ radarr:
     timezone: America/Los_Angeles
   ingress:
     enabled: true
-    className: public
+    className: nginx
     name: radarr
     hosts:
       - host: radarr.lan
@@ -69,7 +69,7 @@ sonarr:
     timezone: America/Los_Angeles
   ingress:
     enabled: true
-    className: public
+    className: nginx
     name: sonarr
     hosts:
       - host: sonarr.lan
@@ -96,7 +96,7 @@ transmission:
     secretName: ovpn-user-pass
   ingress:
     enabled: true
-    className: public
+    className: nginx
     name: transmission
     hosts:
       - host: transmission.lan
@@ -122,7 +122,7 @@ jackett:
     timezone: America/Los_Angeles
   ingress:
     enabled: true
-    className: public
+    className: nginx
     name: jackett
     hosts:
       - host: jackett.lan
@@ -153,7 +153,7 @@ overseerr:
     timezone: America/Los_Angeles
   ingress:
     enabled: true
-    className: public
+    className: nginx
     name: overseerr
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
