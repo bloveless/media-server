@@ -5,11 +5,11 @@ plex:
   deployment:
     enabled: true
     name: plex
-    image: linuxserver/plex:1.25.3.5409-f11334058-ls97
+    image: linuxserver/plex:1.25.5
     timezone: America/Los_Angeles
   ingress:
     enabled: true
-    className: nginx
+    className: contour
     name: plex
     hosts:
       - host: plex.lan
@@ -39,11 +39,11 @@ radarr:
   deployment:
     enabled: true
     name: radarr
-    image: linuxserver/radarr:3.2.2
+    image: linuxserver/radarr:4.0.4-develop
     timezone: America/Los_Angeles
   ingress:
     enabled: true
-    className: nginx
+    className: contour
     name: radarr
     hosts:
       - host: radarr.lan
@@ -65,11 +65,11 @@ sonarr:
   deployment:
     enabled: true
     name: sonarr
-    image: linuxserver/sonarr:3.0.6
+    image: linuxserver/sonarr:3.0.6-develop
     timezone: America/Los_Angeles
   ingress:
     enabled: true
-    className: nginx
+    className: contour
     name: sonarr
     hosts:
       - host: sonarr.lan
@@ -96,7 +96,7 @@ transmission:
     secretName: ovpn-user-pass
   ingress:
     enabled: true
-    className: nginx
+    className: contour
     name: transmission
     hosts:
       - host: transmission.lan
@@ -118,11 +118,11 @@ jackett:
   deployment:
     enabled: true
     name: jackett
-    image: linuxserver/jackett:0.20.280
+    image: linuxserver/jackett:0.20.574
     timezone: America/Los_Angeles
   ingress:
     enabled: true
-    className: nginx
+    className: contour
     name: jackett
     hosts:
       - host: jackett.lan
@@ -153,7 +153,7 @@ overseerr:
     timezone: America/Los_Angeles
   ingress:
     enabled: true
-    className: nginx
+    className: contour
     name: overseerr
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod

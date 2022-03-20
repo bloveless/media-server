@@ -1,0 +1,102 @@
+{{- if .Values.radarr.deployment.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.radarr.deployment.name }}
+  labels:
+    helm.sh/chart: {{ include "media-server.chart" . }}
+    app: media-server
+    component: radarr
+spec:
+  serviceName: radarr
+  replicas: 1
+  selector:
+    matchLabels:
+      helm.sh/chart: {{ include "media-server.chart" . }}
+      app: media-server
+      component: radarr
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: {{ include "media-server.chart" . }}
+        app: media-server
+        component: radarr
+    spec:
+      initContainers:
+      - name: init-litestream-radarr
+        image: bloveless/litestream:v0.1.5-0.3.8-bullseye
+        args: ['restore', '-if-db-not-exists', '-if-replica-exists', '-v', '/config/radarr.db']
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: backup
+          mountPath: /backup
+        - name: radarr-litestream-config
+          mountPath: /etc/litestream.yml
+          subPath: litestream.yml
+      - name: init-litestream-logs
+        image: bloveless/litestream:v0.1.5-0.3.8-bullseye
+        args: ['restore', '-if-db-not-exists', '-if-replica-exists', '-v', '/config/logs.db']
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: backup
+          mountPath: /backup
+        - name: radarr-litestream-config
+          mountPath: /etc/litestream.yml
+          subPath: litestream.yml
+      containers:
+      - name: {{ .Values.radarr.deployment.name }}
+        image: {{ .Values.radarr.deployment.image }}
+        env:
+        - name: TZ
+          value: "{{ .Values.radarr.deployment.timezone }}"
+        ports:
+          - name: http
+            containerPort: 7878
+        volumeMounts:
+{{- if .Values.radarr.persistence.config.enabled }}
+          - name: config
+            mountPath: /config
+{{- end }}
+{{- if .Values.plex.persistence.data.enabled }}
+          - name: data
+            mountPath: /data
+{{- end }}
+      - name: litestream
+        image: bloveless/litestream:v0.1.5-0.3.8-bullseye
+        args: ['replicate']
+        env:
+        - name: DELAY_START
+          value: 10m
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: backup
+          mountPath: /backup
+        - name: radarr-litestream-config
+          mountPath: /etc/litestream.yml
+          subPath: litestream.yml
+        ports:
+        - name: metrics
+          containerPort: 9090
+      volumes:
+        - name: radarr-litestream-config
+          configMap:
+            # Provide the name of the ConfigMap containing the files you want
+            # to add to the container
+            name: radarr-litestream-config
+{{- if .Values.radarr.persistence.config.enabled }}
+        - name: config
+          emptyDir: {}
+{{- end }}
+        - name: backup
+          persistentVolumeClaim:
+            claimName: {{ .Values.radarr.persistence.config.claimName }}
+{{- if .Values.plex.persistence.data.enabled }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Values.plex.persistence.data.claimName }}
+{{- end }}
+{{- end }}
+

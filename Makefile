@@ -4,7 +4,7 @@ test:
 
 .PHONY=install
 install:
-	helm upgrade --install -n media-server -f values.local.yaml media-server .
+	helm upgrade --install --create-namespace -n media-server -f values.local.yaml media-server .
 
 .PHONY=clean
 clean:
