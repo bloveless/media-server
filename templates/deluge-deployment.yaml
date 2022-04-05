@@ -1,0 +1,66 @@
+{{- if .Values.deluge.deployment.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deluge.deployment.name }}
+  labels:
+    helm.sh/chart: {{ include "media-server.chart" . }}
+    app: media-server
+    component: deluge
+spec:
+  selector:
+    matchLabels:
+      helm.sh/chart: {{ include "media-server.chart" . }}
+      app: media-server
+      component: deluge
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: {{ include "media-server.chart" . }}
+        app: media-server
+        component: deluge
+    spec:
+      hostname: deluge-1
+      containers:
+      - name: {{ .Values.deluge.deployment.name }}
+        image: {{ .Values.deluge.deployment.image }}
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: 1
+        env:
+        - name: TZ
+          value: {{ .Values.deluge.deployment.timezone }}
+        ports:
+          - name: webui
+            containerPort: 8112
+          - name: forwarded-port
+            containerPort: 50274
+          - name: incoming-tcp
+            containerPort: 6881
+            protocol: TCP
+          - name: incoming-udp
+            containerPort: 6881
+            protocol: UDP
+        volumeMounts:
+{{- if .Values.deluge.persistence.config.enabled }}
+          - name: config
+            mountPath: /config
+{{- end }}
+{{- if .Values.plex.persistence.data.enabled }}
+          - name: downloads
+            mountPath: /downloads
+{{- end }}
+      volumes:
+{{- if .Values.deluge.persistence.config.enabled }}
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Values.deluge.persistence.config.claimName }}
+{{- end }}
+{{- if .Values.plex.persistence.data.enabled }}
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: {{ .Values.plex.persistence.data.claimName }}
+{{- end }}
+{{- end }}
+

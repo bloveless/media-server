@@ -178,3 +178,23 @@ spec:
   hostPath:
     path: /nfs/k8s/media-server/transmission/config
 {{- end }}
+{{- if .Values.deluge.persistence.config.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-server-deluge-config
+  labels:
+    type: local
+    app: media-server
+    component: deluge
+    volume: config
+spec:
+  storageClassName: {{ .Values.deluge.persistence.config.storageClassName }}
+  capacity:
+    storage: {{ .Values.deluge.persistence.config.capacity }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /nfs/k8s/media-server/deluge/config
+{{- end }}

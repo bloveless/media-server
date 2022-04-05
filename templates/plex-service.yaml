@@ -1,3 +1,4 @@
+{{- if .Values.plex.deployment.enabled}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -8,9 +9,10 @@ spec:
   type: LoadBalancer
   loadBalancerIP: 192.168.3.1
   selector:
-    helm.sh/chart: {{ include "media-server.chart" . }}
+    helm.sh/chart: {{include "media-server.chart" .}}
     app: media-server
     component: plex
   ports:
     - name: http
       port: 32400
+{{- end}}

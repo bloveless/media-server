@@ -92,7 +92,7 @@ spec:
 {{- end }}
         - name: backup
           persistentVolumeClaim:
-            claimName: {{ .Values.radarr.persistence.config.claimName }}
+            claimName: {{ .Values.sonarr.persistence.config.claimName }}
 {{- if .Values.plex.persistence.data.enabled }}
         - name: data
           persistentVolumeClaim:

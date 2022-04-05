@@ -39,7 +39,7 @@ radarr:
   deployment:
     enabled: true
     name: radarr
-    image: linuxserver/radarr:4.0.4-develop
+    image: linuxserver/radarr:4.0.5
     timezone: America/Los_Angeles
   ingress:
     enabled: true
@@ -65,7 +65,7 @@ sonarr:
   deployment:
     enabled: true
     name: sonarr
-    image: linuxserver/sonarr:3.0.6-develop
+    image: linuxserver/sonarr:3.0.7
     timezone: America/Los_Angeles
   ingress:
     enabled: true
@@ -114,11 +114,39 @@ transmission:
       storageClassName: manual
       capacity: 1G
 
+deluge:
+  deployment:
+    enabled: true
+    name: deluge
+    image: linuxserver/deluge:2.0.5
+  ingress:
+    enabled: true
+    className: contour
+    name: deluge
+    hosts:
+      - host: deluge.lan
+        paths:
+          - pathType: Prefix
+            path: /
+            serviceName: deluge-tcp
+            servicePort: 8112
+  service:
+    name: deluge
+  persistence:
+    config:
+      enabled: true
+      claimName: deluge-config-pvc
+      storageClassName: manual
+      capacity: 1G
+
+flaresolverr:
+  enabled: true
+
 jackett:
   deployment:
     enabled: true
     name: jackett
-    image: linuxserver/jackett:0.20.574
+    image: linuxserver/jackett:0.20.744
     timezone: America/Los_Angeles
   ingress:
     enabled: true

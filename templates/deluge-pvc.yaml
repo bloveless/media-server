@@ -1,0 +1,19 @@
+{{- if .Values.deluge.persistence.config.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.deluge.persistence.config.claimName }}
+spec:
+  storageClassName: {{ .Values.deluge.persistence.config.storageClassName }}
+  selector:
+    matchLabels:
+      app: media-server
+      component: deluge
+      volume: config
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.deluge.persistence.config.capacity }}
+---
+{{- end }}

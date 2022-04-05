@@ -62,8 +62,8 @@ spec:
           value: /data/downloads/incomplete
         - name: TRANSMISSION_WATCH_DIR
           value: /data/downloads/watch
-        - name: TRANSMISSION_WEB_UI
-          value: combustion
+        # - name: TRANSMISSION_WEB_UI
+        #   value: combustion
         - name: WEBPROXY_ENABLED
           value: "true"
         - name: WEBPROXY_PORT
